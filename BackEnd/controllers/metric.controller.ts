@@ -113,7 +113,7 @@ export default {
   getDataPrometheus: async (req: any, res: any) => {
     logger.info(`/GET prometheus`)
 
-    const PROMETHEUS_URL = 'http://localhost:4000';  // Default URL for Prometheus, change if necessary
+    const PROMETHEUS_URL = 'http://127.0.0.1:9090';  // Default URL for Prometheus, change if necessary
 
     const { query } = req.query;  // Get the PromQL query from the frontend
 

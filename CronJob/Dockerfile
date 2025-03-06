@@ -1,4 +1,4 @@
-FROM node:22
+FROM node:18
 
 # # Install latest chrome dev package and fonts to support major charsets (Chinese, Japanese, Arabic, Hebrew, Thai and a few others)
 # # We don't need the standalone Chromium

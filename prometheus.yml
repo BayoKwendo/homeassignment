@@ -1,7 +1,7 @@
 global:
-  scrape_interval: 15s
+  scrape_interval: 1s  # Interval to scrape metrics
 
 scrape_configs:
-  - job_name: 'panth_app'
+  - job_name: 'panth_app'  # Job name is 'panth_app'
     static_configs:
-      - targets: ['localhost:r000']
+      - targets: ['crontab-app:4000']  # The new endpoint for metrics

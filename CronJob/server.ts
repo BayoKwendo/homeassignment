@@ -46,47 +46,7 @@ async function queryPrometheus(query) {
 }
 
 
-// Route to fetch metrics using PromQL
-server.get('/get-metrics', async (req, res) => {
-  console.log("get-metrics");
 
-  let { impressions, date_start, date_stop } = req.query;
-
-  // Check if all query parameters are provided
-  if (!impressions || !date_start || !date_stop) {
-    return res.status(400).send('Missing required query parameters');
-  }
-
-  // Ensure date_start and date_stop are strings
-  if (typeof date_start !== 'string' && typeof date_start !== 'number') {
-    return res.status(400).send('Invalid date_start value');
-  }
-  date_start = String(date_start); // Ensure it's a string
-
-  if (typeof date_stop !== 'string' && typeof date_stop !== 'number') {
-    return res.status(400).send('Invalid date_stop value');
-  }
-  date_stop = String(date_stop); // Ensure it's a string
-
-  // Ensure impressions is a number
-  if (typeof impressions !== 'string' && typeof impressions !== 'number') {
-    return res.status(400).send('Invalid impressions value');
-  }
-
-
-  // PromQL query to get data for impressions within the given date range
-  const query = `impressions_total{date_start="${date_start}", date_stop="${date_stop}"}`;
-
-  try {
-    // Query Prometheus
-    const data = await queryPrometheus(query);
-
-    // Send the result back to the client
-    res.json(data);  // Send Prometheus response back to client
-  } catch (error) {
-    res.status(500).send('Error querying Prometheus');
-  }
-});
 
 /**
 * @const start

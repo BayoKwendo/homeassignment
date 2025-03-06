@@ -30,7 +30,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus.yml:/Assignment/prometheus.yml
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
       - monitoring
     restart: always
