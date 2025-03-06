@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  crontab-app:
+    build:
+      context: ./CronJob
+      dockerfile: Dockerfile
+
+    container_name: crontab-app
+    ports:
+      - "4000:4000"
+    networks:
+      - monitoring
+    restart: always
+
+  back-end:
+    build:
+      context: ./BackEnd
+      dockerfile: Dockerfile
+
+    container_name: backend-app
+    ports:
+      - "8000:8000"
+    networks:
+      - monitoring
+    restart: always
+  prometheus:
+    image: prom/prometheus:v2.45.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/Assignment/prometheus.yml
+    networks:
+      - monitoring
+    restart: always
+
+  front-end:
+    build:
+      context: ./FrontEnd
+      dockerfile: Dockerfile
+
+    container_name: frontend-app
+    ports:
+      - "3000:3000"
+    networks:
+      - monitoring
+    restart: always
+
+networks:
+  monitoring:
+    driver: bridge
