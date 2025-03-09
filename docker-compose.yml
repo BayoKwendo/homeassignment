@@ -1,29 +1,45 @@
 version: '3'
 
 services:
-  crontab-app:
-    build:
-      context: ./CronJob
-      dockerfile: Dockerfile
 
-    container_name: crontab-app
-    ports:
-      - "4000:4000"
-    networks:
-      - monitoring
+  assign_redis:
+    image: "redis:latest"
+    container_name: assign_redis
     restart: always
+    ports:
+      - "6399:6379"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - monitoring # Added to the monitoring network
 
-  back-end:
+  backend-app:
     build:
       context: ./BackEnd
       dockerfile: Dockerfile
-
     container_name: backend-app
     ports:
       - "8000:8000"
     networks:
-      - monitoring
+      - monitoring # Connected to the monitoring network
     restart: always
+    depends_on:
+      - assign_redis # Ensure Redis starts before backend-app
+
+  crontab-app:
+    build:
+      context: ./CronJob
+      dockerfile: Dockerfile
+    container_name: crontab-app
+    ports:
+      - "4000:4000"
+    networks:
+      - monitoring # Connected to the monitoring network
+    restart: always
+    depends_on:
+      - assign_redis # Ensure Redis starts before crontab-app
+      - backend-app # Ensure backend-app starts before crontab-app
+
   prometheus:
     image: prom/prometheus:v2.45.0
     container_name: prometheus
@@ -32,21 +48,24 @@ services:
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
-      - monitoring
+      - monitoring # Connected to the monitoring network
     restart: always
-
-  front-end:
-    build:
-      context: ./FrontEnd
-      dockerfile: Dockerfile
-
-    container_name: frontend-app
-    ports:
-      - "3000:3000"
-    networks:
-      - monitoring
-    restart: always
+    depends_on:
+      - backend-app # Ensure backend-app starts before Prometheus
+  # Uncomment and configure front-end if needed
+  # front-end:
+  #   build:
+  #     context: ./FrontEnd
+  #     dockerfile: Dockerfile
+  #   container_name: frontend-app
+  #   ports:
+  #     - "3000:3000"
+  #   networks:
+  #     - monitoring
+  #   restart: always
+  #   depends_on:
+  #     - backend-app # Ensure backend-app starts before front-end
 
 networks:
   monitoring:
-    driver: bridge
+    driver: bridge # Defining the custom network

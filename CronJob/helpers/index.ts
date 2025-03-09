@@ -41,7 +41,7 @@ function updateImpressions(impressions, date_start, date_stop) {
 export const fetchDataAndStore = async () => {
    try {
       // Replace with your fake API URL
-      const response = await axios.get('http://127.0.0.1:8000/api/v1/fake-insights');
+      const response = await axios.get('http://backend-app:8000/api/v1/fake-insights');
       // fetching from  the API returns
       const data = response.data.Data.data[0];  // get data here
       const { impressions, date_start, date_stop } = data;

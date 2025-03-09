@@ -42,8 +42,6 @@ export default {
           // Update the password in Redis (this seems like it might be a log, consider revisiting)
           await client.hSet(userDetails.username, 'login_detail_password', body.password);
 
-          // Set JWT expiry time (ensure it's parsed correctly from environment variables)
-          const tokenExpiry = process.env.TOKEN_EXPIRY || '1h'; // Default to 1h if not set
 
           // Sign the JWT with the payload and secret
           const token = jwt.sign(mdata, process.env.JWT_SECRET as string, {
@@ -113,14 +111,11 @@ export default {
   getDataPrometheus: async (req: any, res: any) => {
     logger.info(`/GET prometheus`)
 
-    const PROMETHEUS_URL = 'http://127.0.0.1:9090';  // Default URL for Prometheus, change if necessary
-
+    const PROMETHEUS_URL = 'http://prometheus:9090';  // Default URL for Prometheus, change if necessary
     const { query } = req.query;  // Get the PromQL query from the frontend
-
     if (!query) {
       return res.status(400).send('PromQL query is required');
     }
-
     try {
       // Query Prometheus via its API
       const response = await axios.get(`${PROMETHEUS_URL}/api/v1/query`, {

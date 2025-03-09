@@ -1,20 +1,25 @@
 FROM node:22
 
-# # Install latest chrome dev package and fonts to support major charsets (Chinese, Japanese, Arabic, Hebrew, Thai and a few others)
-# # We don't need the standalone Chromium
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+# Expose the port that your app will run on
+EXPOSE 8000
 
-## exposed port
-EXPOSE 4000 
-
-## work directory
+# Set the working directory inside the container
 WORKDIR /app
 
-## Add the wait script to the image ; will on await for mysql connect
-# ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
-
+# Copy package.json and package-lock.json to utilize Docker's caching mechanism
 COPY package*.json ./
+
+# Install dependencies
 RUN npm install
 
-# RUN  npm install --legacy-peer-deps
+# Copy the rest of the application code
+COPY . /app/
+
+# Optionally, add the wait script for MySQL (uncomment if needed)
+# ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
+
+# Make the wait script executable (if used)
+# RUN chmod +x /wait
+
+# CMD to start the application (adjust if you need the wait script first)
 CMD ["npm", "start"]
