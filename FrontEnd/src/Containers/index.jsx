@@ -29,7 +29,7 @@ const Customer = () => {
 
     const onSubmit = () => {
 
-        axios.post('http://localhost:8000/get-metrics', data, CONFIG).then((response) => {
+        axios.post('http://127.0.0.1:8000/api/v1/get-metrics?query="impressions_total"', data, CONFIG).then((response) => {
             console.log(response);
             if (response.data.status) {
             } else {
