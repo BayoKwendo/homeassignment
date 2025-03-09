@@ -14,10 +14,17 @@ Below are the instructions to get the project up and running.
 
 Make sure you have the following tools installed on your machine:
 
-- **Docker** and **Docker Compose** (if you plan to use Docker for the setup).
+- **Docker** and **Docker Compose**.
 - **Node.js** and **npm** (for individual component setup).
 
 ---
+
+## API Doc
+**Postman collection:**
+ Accessible at  https://documenter.getpostman.com/view/42741674/2sAYdoFnTm
+
+
+This will build the Docker images and start all containers in detached mode.
 
 ## Running the Project with Docker Compose
 

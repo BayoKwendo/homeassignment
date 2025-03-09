@@ -44,7 +44,7 @@ export default {
 
 
           // Sign the JWT with the payload and secret
-          const token = jwt.sign(mdata, process.env.JWT_SECRET as string, {
+          const token = jwt.sign(mdata, "process.env.JWT_SECRET as string", {
             expiresIn: "5h",
           });
 
