@@ -53,18 +53,18 @@ services:
     depends_on:
       - backend-app # Ensure backend-app starts before Prometheus
   # Uncomment and configure front-end if needed
-  # front-end:
-  #   build:
-  #     context: ./FrontEnd
-  #     dockerfile: Dockerfile
-  #   container_name: frontend-app
-  #   ports:
-  #     - "3000:3000"
-  #   networks:
-  #     - monitoring
-  #   restart: always
-  #   depends_on:
-  #     - backend-app # Ensure backend-app starts before front-end
+  front-end:
+    build:
+      context: ./FrontEnd
+      dockerfile: Dockerfile
+    container_name: frontend-app
+    ports:
+      - "3000:3000"
+    networks:
+      - monitoring
+    restart: always
+    depends_on:
+      - backend-app # Ensure backend-app starts before front-end
 
 networks:
   monitoring:
